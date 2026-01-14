@@ -66,26 +66,39 @@ export default function Dashboard() {
     };
 
     return (
-        <div style={{ maxWidth: "800px", margin: "0 auto" }}>
-            <h2>API Monitor Dashboard</h2>
+        <div className="max-w-3xl mx-auto p-6 bg-gray-50 min-h-screen">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-6">
+                API Monitor Dashboard
+            </h2>
 
-            <form onSubmit={onSubmit}>
+            <form
+                onSubmit={onSubmit}
+                className="bg-white shadow-md rounded-lg p-6 space-y-5"
+            >
+                {/* Request URL */}
                 <div>
-                    <label>Request URL</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Request URL
+                    </label>
                     <input
                         type="text"
                         value={requestUrl}
                         onChange={(e) => setRequestUrl(e.target.value)}
                         placeholder="http://localhost:8000/health"
                         required
+                        className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400"
                     />
                 </div>
 
+                {/* Request Method */}
                 <div>
-                    <label>Request Method</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Request Method
+                    </label>
                     <select
                         value={requestType}
                         onChange={(e) => setRequestType(e.target.value)}
+                        className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-400"
                     >
                         <option value="GET">GET</option>
                         <option value="POST">POST</option>
@@ -94,45 +107,66 @@ export default function Dashboard() {
                     </select>
                 </div>
 
+                {/* Headers */}
                 <div>
-                    <label>Headers (JSON)</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Headers (JSON)
+                    </label>
                     <textarea
                         rows={5}
                         value={headersJson}
                         onChange={(e) => setHeadersJson(e.target.value)}
                         placeholder='{"Authorization": "Bearer token"}'
+                        className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400"
                     />
                 </div>
 
+                {/* Body */}
                 <div>
-                    <label>Body (JSON)</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Body (JSON)
+                    </label>
                     <textarea
                         rows={6}
                         value={bodyJson}
                         onChange={(e) => setBodyJson(e.target.value)}
-                        disabled={
-                            requestType === "GET" || requestType === "DELETE"
-                        }
+                        disabled={requestType === "GET" || requestType === "DELETE"}
                         placeholder='{"name": "test"}'
+                        className="w-full rounded-md border border-gray-300 px-3 py-2 text-gray-800 placeholder-gray-400 disabled:bg-gray-100 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-gray-400"
                     />
                 </div>
 
-                <button type="submit">Check API</button>
+                {/* Submit */}
+                <button
+                    type="submit"
+                    className="w-full bg-gray-800 text-white py-2 rounded-md font-medium hover:bg-gray-700 transition"
+                >
+                    Check API
+                </button>
             </form>
 
+            {/* Result */}
             {result && (
-                <div style={{ marginTop: "20px" }}>
-                    <h3>Result</h3>
-                    <p>Status Code: {result.status_code}</p>
-                    <p>Response Time: {result.response_time_ms} ms</p>
+                <div className="mt-6 bg-white border border-gray-200 rounded-lg p-4">
+                    <h3 className="text-lg font-semibold text-gray-800 mb-2">Result</h3>
+                    <p className="text-gray-700">
+                        <span className="font-medium">Status Code:</span>{" "}
+                        {result.status_code}
+                    </p>
+                    <p className="text-gray-700">
+                        <span className="font-medium">Response Time:</span>{" "}
+                        {result.response_time_ms} ms
+                    </p>
                 </div>
             )}
 
+            {/* Error */}
             {error && (
-                <div style={{ marginTop: "20px", color: "red" }}>
+                <div className="mt-6 bg-red-50 border border-red-200 text-red-700 rounded-lg p-4">
                     Error: {error}
                 </div>
             )}
         </div>
+
     );
 }
