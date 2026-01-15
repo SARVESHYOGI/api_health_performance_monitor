@@ -8,4 +8,15 @@ const pool = new Pool({
     database: process.env.DB_NAME,
 });
 
+pool
+    .connect()
+    .then(client => {
+        console.log("Database connected successfully");
+        client.release();
+    })
+    .catch(err => {
+        console.error("Database connection failed:", err);
+        process.exit(1);
+    });
+
 module.exports = pool;
