@@ -11,9 +11,11 @@ export default function Login() {
         e.preventDefault();
 
         try {
+            console.log(email, password);
             const res = await api.post("/auth/login", { email, password });
             console.log(res);
             if (res.status === 200) {
+                window.location = "/dashboard"
                 navigate("/dashboard");
             } else {
                 console.log("object");
