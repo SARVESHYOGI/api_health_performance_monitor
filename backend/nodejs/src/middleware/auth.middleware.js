@@ -13,7 +13,7 @@ export const authMiddleware = async (req, res, next) => {
         const { payload } = await verifyToken(token);
 
         req.user = {
-            id: payload.id,
+            id: payload.userId,
             email: payload.email,
         };
 

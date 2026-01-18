@@ -1,5 +1,5 @@
 import axios from "axios";
-import { createApiLog, getLast5Requests } from "../models/apiLog.model.js";
+import { createApiLog, getLast5Requests, getAllApiLogs } from "../models/apiLog.model.js";
 
 export const makeRequest = async (req, res) => {
     const startTime = Date.now();
@@ -11,7 +11,9 @@ export const makeRequest = async (req, res) => {
             query_params = {},
             request_body = {},
         } = req.body;
-
+        if (!method || !url) {
+            return res.status(400).json({ message: "method and url are required" });
+        }
         const response = await axios({
             method: method.toLowerCase(),
             url,
@@ -24,7 +26,7 @@ export const makeRequest = async (req, res) => {
         const responseTime = Date.now() - startTime;
 
         await createApiLog({
-            method,
+            method: method.toUpperCase(),
             url,
             headers,
             query_params,
@@ -32,10 +34,10 @@ export const makeRequest = async (req, res) => {
             user_id: req.user?.id || null,
             user_email: req.user?.email || null,
             ip_address: req.ip,
-            user_agent: req.headers["user-agent"],
+            user_agent: req.headers["user-agent"] || null,
             request_id: req.headers["x-request-id"] || null,
             status_code: response.status,
-            response_body: response.data,
+            response_body: JSON.stringify(response.data),
             response_time_ms: responseTime,
         });
 
@@ -59,7 +61,8 @@ export const makeRequest = async (req, res) => {
 
 export const getAllRequest = async (req, res) => {
     try {
-
+        const logs = await getAllApiLogs();
+        return res.status(200).json(logs);
     } catch (error) {
         console.log(error);
         return res.status();
@@ -69,9 +72,11 @@ export const getAllRequest = async (req, res) => {
 
 export const showAnalytics = async (req, res) => {
     try {
-        const analytics = await getLast5Requests();
+        const userId = req.user.id;
+        const analytics = await getLast5Requests(userId);
 
         return res.status(200).json({
+            user_id: userId,
             last_5_requests: analytics,
         });
     } catch (error) {

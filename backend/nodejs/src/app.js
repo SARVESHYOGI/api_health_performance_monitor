@@ -1,7 +1,7 @@
 import cookieParser from 'cookie-parser';
 import express from 'express'
 import authRouter from './routes/auth.route.js'
-
+import reqRouter from './routes/req.route.js';
 
 const app = express();
 
@@ -15,7 +15,7 @@ app.get('/', (_req, res) => {
 })
 
 app.use('/api/auth', authRouter)
-
+app.use('/api/request', reqRouter)
 
 export default app;
 
