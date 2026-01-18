@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import { signToken } from "../utils/jwt.js";
+import { signToken, verifyToken } from "../utils/jwt.js";
 import { findUserByEmail, createUser } from "../models/auth.model.js";
 
 export const register = async (req, res) => {
@@ -74,6 +74,34 @@ export const logout = async (req, res) => {
     } catch (error) {
         console.log(error);
         return res.status(400).json({
+            message: error
+        })
+    }
+}
+
+export const me = async (req, res) => {
+    try {
+        const token =
+            req.cookies?.token ||
+            req.headers.authorization?.split(" ")[1];
+        if (!token) {
+            return res.status(401).json({
+                authenticated: false,
+                message: "Not authenticated",
+            });
+        }
+        const decoded = verifyToken(token);
+        return res.status(200).json({
+            authenticated: true,
+            user: {
+                id: decoded.userId,
+                email: decoded.email,
+            },
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.json({
             message: error
         })
     }

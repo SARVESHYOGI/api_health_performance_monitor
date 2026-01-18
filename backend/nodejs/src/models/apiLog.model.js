@@ -43,13 +43,14 @@ export const createApiLog = async (data) => {
   return result.rows[0];
 };
 
-export const getAllApiLogs = async () => {
+export const getAllApiLogs = async (userId) => {
   const query = `
     SELECT *
     FROM api_request_logs
+    WHERE user_id = $1
     ORDER BY created_at DESC
   `;
-  const result = await pool.query(query);
+  const result = await pool.query(query, [userId]);
   return result.rows;
 };
 

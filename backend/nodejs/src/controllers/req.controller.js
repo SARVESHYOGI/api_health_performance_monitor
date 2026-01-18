@@ -41,6 +41,8 @@ export const makeRequest = async (req, res) => {
             response_time_ms: responseTime,
         });
 
+        console.log(res);
+
         return res.status(response.status).json({
             status: response.status,
             headers: response.headers,
@@ -61,7 +63,8 @@ export const makeRequest = async (req, res) => {
 
 export const getAllRequest = async (req, res) => {
     try {
-        const logs = await getAllApiLogs();
+        const user = req.user?.id
+        const logs = await getAllApiLogs(user);
         return res.status(200).json(logs);
     } catch (error) {
         console.log(error);

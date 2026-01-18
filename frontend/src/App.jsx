@@ -4,19 +4,31 @@ import Login from './pages/Login.jsx'
 import Register from './pages/Register.jsx'
 import Home from './pages/Home.jsx'
 import { Routes, Route } from 'react-router-dom';
+import ProtectedRoute from './components/ProtectedRoute.jsx'
+import Navbar from './components/Navbar.jsx'
+import PastApi from './pages/PastApi.jsx'
+import Analytics from './pages/Analytics.jsx'
 
 function App() {
-
   return (
     <>
-      <div>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/" element={<Home />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-        </Routes>
-      </div>
+      <Navbar />
+
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/pastapi" element={<PastApi />} />
+        <Route path="/analytics" element={<Analytics />} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
     </>
   )
 }
