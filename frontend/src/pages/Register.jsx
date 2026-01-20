@@ -25,9 +25,6 @@ export default function Register() {
                 </p>
 
                 <form onSubmit={onSubmit} className="space-y-5">
-
-
-
                     <div>
                         <label
                             htmlFor="email"

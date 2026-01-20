@@ -57,9 +57,9 @@ export default function Dashboard() {
 
 
     return (
-        <div className="max-w-3xl mx-auto p-6 bg-gray-50 min-h-screen">
+        <div className="max-w-3xl mx-auto p-6 m-2 bg-gray-50 min-h-screen">
             <h2 className="text-2xl font-semibold text-gray-800 mb-6">
-                API Monitor Dashboard
+                API Monitor Checker
             </h2>
 
             <form

@@ -2,7 +2,6 @@ import axios from "axios";
 import { createApiLog, getLast5Requests, getAllApiLogs } from "../models/apiLog.model.js";
 
 export const makeRequest = async (req, res) => {
-    const startTime = Date.now();
     try {
         const {
             method,
@@ -14,16 +13,27 @@ export const makeRequest = async (req, res) => {
         if (!method || !url) {
             return res.status(400).json({ message: "method and url are required" });
         }
-        const response = await axios({
-            method: method.toLowerCase(),
-            url,
-            headers,
-            params: query_params,
-            data: request_body,
-            validateStatus: () => true,
-        });
+        const REQUEST_COUNT = 5;
+        let totalTime = 0;
+        let lastResponse = null;
+        for (let i = 0; i < REQUEST_COUNT; i++) {
+            const startTime = Date.now();
 
-        const responseTime = Date.now() - startTime;
+            const response = await axios({
+                method: method.toLowerCase(),
+                url,
+                headers,
+                params: query_params,
+                data: request_body,
+                validateStatus: () => true,
+            });
+
+            const responseTime = Date.now() - startTime;
+            totalTime += responseTime;
+            lastResponse = response;
+        }
+        const avgResponseTime = Math.round(totalTime / REQUEST_COUNT);
+
 
         await createApiLog({
             method: method.toUpperCase(),
@@ -36,18 +46,19 @@ export const makeRequest = async (req, res) => {
             ip_address: req.ip,
             user_agent: req.headers["user-agent"] || null,
             request_id: req.headers["x-request-id"] || null,
-            status_code: response.status,
-            response_body: JSON.stringify(response.data),
-            response_time_ms: responseTime,
+            status_code: lastResponse.status,
+            response_body: JSON.stringify(lastResponse.data),
+            response_time_ms: avgResponseTime,
         });
 
         console.log(res);
 
-        return res.status(response.status).json({
-            status: response.status,
-            headers: response.headers,
-            data: response.data,
-            responseTimeMs: responseTime,
+        return res.status(lastResponse.status).json({
+            status: lastResponse.status,
+            headers: lastResponse.headers,
+            data: lastResponse.data,
+            averageResponseTimeMs: avgResponseTime,
+            totalRequests: REQUEST_COUNT,
         });
 
     } catch (error) {

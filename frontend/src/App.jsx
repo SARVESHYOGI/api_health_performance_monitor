@@ -18,10 +18,22 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/pastapi" element={<PastApi />} />
-        <Route path="/analytics" element={<Analytics />} />
+        <Route path="/pastapi" element={
+          <>
+            <ProtectedRoute>
+              <PastApi />
+            </ProtectedRoute>
+          </>
+        } />
+        <Route path="/analytics" element={
+          <>
+            <ProtectedRoute>
+              <Analytics />
+            </ProtectedRoute>
+          </>
+        } />
         <Route
-          path="/dashboard"
+          path="/checker"
           element={
             <ProtectedRoute>
               <Dashboard />

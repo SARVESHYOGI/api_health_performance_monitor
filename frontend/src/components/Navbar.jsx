@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import api from "../api/api";
 
@@ -28,13 +28,17 @@ export default function Navbar() {
                 <div className="flex justify-between items-center h-16">
 
                     <div className="flex-shrink-0">
-                        <h1 className="text-xl font-bold text-gray-900">API Monitor</h1>
+                        <h1 className="text-xl font-bold text-gray-900">
+                            <Link to="/">
+                                API Monitor
+                            </Link>
+                        </h1>
                     </div>
 
                     {auth && (
                         <div className="hidden md:flex space-x-6">
-                            <button onClick={() => navigate("/dashboard")} className="text-gray-700 hover:text-gray-900 font-medium transition">
-                                Dashboard
+                            <button onClick={() => navigate("/checker")} className="text-gray-700 hover:text-gray-900 font-medium transition">
+                                Checker
                             </button>
                             <button onClick={() => navigate("/pastapi")} className="text-gray-700 hover:text-gray-900 font-medium transition">
                                 Past APIs
