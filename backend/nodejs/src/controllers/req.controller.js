@@ -1,5 +1,5 @@
 import axios from "axios";
-import { createApiLog, getLast5Requests, getAllApiLogs } from "../models/apiLog.model.js";
+import { createApiLog, getLast5Requests, getAllApiLogs, deleteReq } from "../models/apiLog.model.js";
 
 export const makeRequest = async (req, res) => {
     try {
@@ -98,3 +98,24 @@ export const showAnalytics = async (req, res) => {
         return res.status(500).json({ message: "Analytics failed" });
     }
 };
+
+export const deleteRequest = async (req, res) => {
+    try {
+        console.log(req.params.id);
+        const { id } = await req.params;
+        const deletedCount = await deleteReq(id);
+        if (deletedCount === 0) {
+            return res.status(404).json({ message: "Request not found" });
+        }
+
+        return res.status(200).json({
+            message: "Deleted successfully",
+            deletedId: id,
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(200).json({
+            message: error
+        })
+    }
+}

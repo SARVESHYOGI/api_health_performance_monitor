@@ -70,3 +70,9 @@ export const getLast5Requests = async (userId) => {
   const result = await pool.query(query, [userId]);
   return result.rows;
 };
+
+export const deleteReq = async (id) => {
+  const query = `DELETE FROM api_request_logs WHERE id = $1`;
+  const result = await pool.query(query, [id]);
+  return result.rowCount;
+}

@@ -147,7 +147,7 @@ export default function Dashboard() {
 
                     <p className="text-gray-700">
                         <span className="font-medium">Response Time:</span>{" "}
-                        {result.responseTimeMs} ms
+                        {result.averageResponseTimeMs} ms
                     </p>
 
                     <div className="mt-3">

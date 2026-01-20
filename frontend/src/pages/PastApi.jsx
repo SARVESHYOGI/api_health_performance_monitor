@@ -35,6 +35,21 @@ export default function PastApi() {
         }
     };
 
+    const deleteEndPoint = async (id) => {
+        const confirmed = window.confirm("Are you sure you want to delete this request?");
+
+        if (!confirmed) return;
+        try {
+
+            const res = await api.delete(`/request/delete/${id}`);
+            console.log(res.data);
+            setLogs((prev) => prev.filter((log) => log.id != id));
+
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     return (
         <div className="max-w-6xl mx-auto p-6">
             <h1 className="text-2xl font-bold mb-4">Past API Requests</h1>
@@ -52,12 +67,22 @@ export default function PastApi() {
                             <span className="font-bold mr-2">{log.method}</span>
                             <span className="text-blue-600 font-medium">{log.url}</span>
                         </div>
-                        <button
-                            onClick={() => toggleOpen(log.id)}
-                            className="text-sm text-gray-600 hover:text-gray-900"
-                        >
-                            {openId === log.id ? "Hide Details" : "Show Details"}
-                        </button>
+                        <div>
+
+                            <button
+                                onClick={() => deleteEndPoint(log.id)}
+                                className="text-sm hover:text-gray-900 px-2 bg-red-600 hover:bg-red-800 py-1 rounded-2xl text-white"
+                            >
+                                DELETE
+                            </button>
+                            <button
+                                onClick={() => toggleOpen(log.id)}
+                                className="text-sm text-gray-600 hover:text-gray-900 px-2"
+                            >
+                                {openId === log.id ? "Hide Details" : "Show Details"}
+                            </button>
+                        </div>
+
                     </div>
 
                     <div className="grid grid-cols-2 gap-4 text-sm text-gray-700">
@@ -66,7 +91,7 @@ export default function PastApi() {
                             <div>{log.status_code}</div>
                         </div>
                         <div>
-                            <div className="font-semibold">Response Time</div>
+                            <div className="font-semibold">AVG Response Time</div>
                             <div>{log.response_time_ms} ms</div>
                         </div>
                         <div>
@@ -88,7 +113,7 @@ export default function PastApi() {
                                 </pre>
                             </div>
 
-                            <div>
+                            {/* <div>
                                 <div className="font-semibold">Query Params</div>
                                 <pre className="bg-gray-100 rounded-md p-3 text-xs overflow-x-auto">
                                     {formatJson(log.query_params)}
@@ -100,7 +125,7 @@ export default function PastApi() {
                                 <pre className="bg-gray-100 rounded-md p-3 text-xs overflow-x-auto">
                                     {formatJson(log.path_params)}
                                 </pre>
-                            </div>
+                            </div> */}
 
                             <div>
                                 <div className="font-semibold">Request Body</div>

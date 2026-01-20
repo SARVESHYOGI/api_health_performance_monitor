@@ -47,7 +47,7 @@ export default function Analytics() {
         labels,
         datasets: [
             {
-                label: "Response Time (ms)",
+                label: "AVG Response Time (ms)",
                 data: responseTimes,
             },
         ],
