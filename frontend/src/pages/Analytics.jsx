@@ -49,6 +49,10 @@ export default function Analytics() {
             {
                 label: "AVG Response Time (ms)",
                 data: responseTimes,
+                backgroundColor: "rgba(59, 130, 246, 0.7)",
+                borderColor: "rgba(59, 130, 246, 1)",
+                borderWidth: 1,
+                borderRadius: 4,
             },
         ],
     };
@@ -58,23 +62,49 @@ export default function Analytics() {
         plugins: {
             legend: {
                 position: "top",
+                labels: {
+                    font: { size: 14 },
+                },
             },
             title: {
                 display: true,
                 text: "Last 5 API Response Times",
+                font: { size: 18, weight: "bold" },
+            },
+            tooltip: {
+                callbacks: {
+                    label: (context) =>
+                        ` ${context.dataset.label}: ${context.raw} ms`,
+                },
+            },
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: "Response Time (ms)",
+                },
+            },
+            x: {
+                ticks: {
+                    autoSkip: false,
+                    maxRotation: 45,
+                    minRotation: 15,
+                },
             },
         },
     };
 
     return (
         <div className="max-w-6xl mx-auto p-6">
-            <h1 className="text-2xl font-bold mb-4">Analytics</h1>
+            <h1 className="text-2xl font-bold mb-6 text-gray-900">Analytics</h1>
 
-            {loading && <p>Loading...</p>}
+            {loading && <p className="text-gray-500">Loading...</p>}
             {error && <p className="text-red-600">{error}</p>}
 
             {!loading && !error && (
-                <div className="bg-white p-6 rounded-lg shadow-md">
+                <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
                     <Bar data={data} options={options} />
                 </div>
             )}

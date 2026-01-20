@@ -27,9 +27,9 @@ export default function Navbar() {
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
 
-                    <div className="flex-shrink-0">
-                        <h1 className="text-xl font-bold text-gray-900">
-                            <Link to="/">
+                    <div className="">
+                        <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
+                            <Link to="/" className="hover:text-blue-600 transition-colors">
                                 API Monitor
                             </Link>
                         </h1>
@@ -37,23 +37,32 @@ export default function Navbar() {
 
                     {auth && (
                         <div className="hidden md:flex space-x-6">
-                            <button onClick={() => navigate("/checker")} className="text-gray-700 hover:text-gray-900 font-medium transition">
+                            <button
+                                onClick={() => navigate("/checker")}
+                                className="text-gray-700 hover:text-gray-900 font-medium transition-colors"
+                            >
                                 Checker
                             </button>
-                            <button onClick={() => navigate("/pastapi")} className="text-gray-700 hover:text-gray-900 font-medium transition">
+                            <button
+                                onClick={() => navigate("/pastapi")}
+                                className="text-gray-700 hover:text-gray-900 font-medium transition-colors"
+                            >
                                 Past APIs
                             </button>
-                            <button onClick={() => navigate("/analytics")} className="text-gray-700 hover:text-gray-900 font-medium transition">
-                                Past 5 API Analytics
+                            <button
+                                onClick={() => navigate("/analytics")}
+                                className="text-gray-700 hover:text-gray-900 font-medium transition-colors"
+                            >
+                                Analytics
                             </button>
                         </div>
                     )}
 
-                    <div>
+                    <div className="flex items-center space-x-3">
                         {auth ? (
                             <button
                                 onClick={handleLogout}
-                                className="bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded-lg shadow-sm transition"
+                                className="bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded-lg shadow-sm transition transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500"
                             >
                                 Logout
                             </button>
@@ -61,20 +70,19 @@ export default function Navbar() {
                             <>
                                 <button
                                     onClick={() => navigate("/login")}
-                                    className="text-gray-700 font-medium mr-4"
+                                    className="text-gray-700 font-medium hover:text-gray-900 transition-colors"
                                 >
                                     Login
                                 </button>
                                 <button
                                     onClick={() => navigate("/register")}
-                                    className="bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded-lg"
+                                    className="bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded-lg shadow-sm transition transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-700"
                                 >
                                     Register
                                 </button>
                             </>
                         )}
                     </div>
-
                 </div>
             </div>
         </nav>
